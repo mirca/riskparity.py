@@ -4,28 +4,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Including mean return and variance into the risk parity formulation &#8212; riskparity.py 0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <title>Adding the mean return &#8212; riskparity.py 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Comparison with pyrb" href="comparison-with-pyrb.html" />
-    <link rel="prev" title="Minimal Usage" href="minimal-usage.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <!-- Load Bootstrap CSS and Javascript (Javascript is needed for the navbar toggle) -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <!-- Load the theme's CSS. -->
-    <link rel="stylesheet" href="../_static/css/amunra.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/amunra.css" type="text/css" />
 
     
 
@@ -33,7 +31,7 @@
 <header>
 <nav class="navbar navbar-expand-lg navbar-light border-bottom">
   <div class="container">
-    <a class="navbar-brand" href="../index.html">riskparity.py</a>
+    <a class="navbar-brand" href="../../index.html">riskparity.py</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -46,12 +44,12 @@
           
           <li class="nav-item">
           
-            <a class="nav-link" href="index.html">Tutorials</a>
+            <a class="nav-link" href="../index.html">Tutorials</a>
           </li>
       </ul>
     
 
-        <form class="form-inline my-2 my-md-0 ml-auto" action="../search.html" method="get">
+        <form class="form-inline my-2 my-md-0 ml-auto" action="../../search.html" method="get">
             <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="q" />
         </form>
 
@@ -288,8 +286,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<div class="section" id="Including-mean-return-and-variance-into-the-risk-parity-formulation">
-<h1>Including mean return and variance into the risk parity formulation<a class="headerlink" href="#Including-mean-return-and-variance-into-the-risk-parity-formulation" title="Permalink to this headline">¶</a></h1>
+<p>Including mean return and variance into the risk parity formulation</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -325,7 +322,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>In this notebook, we will check out the necessary interface to take into account the mean return and the variance while optimizing risk parity portfolios.</p>
 <div class="section" id="Adding-the-mean-return">
-<h2>Adding the mean return<a class="headerlink" href="#Adding-the-mean-return" title="Permalink to this headline">¶</a></h2>
+<h1>Adding the mean return<a class="headerlink" href="#Adding-the-mean-return" title="Permalink to this headline">¶</a></h1>
 <p><strong>riskparity.py</strong> allows users to account for the mean return of the designed portfolio, i.e., we solve the following optimization problem:</p>
 <div class="math notranslate nohighlight">
 \begin{array}{ll}
@@ -471,26 +468,26 @@ array([0.1594, 0.0126, 0.828 ])
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-  9%|▉         | 44/500 [00:01&lt;00:13, 34.74it/s]
+  8%|▊         | 38/500 [00:00&lt;00:05, 90.06it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 1/500 [00:00&lt;00:29, 17.15it/s]
-  1%|          | 3/500 [00:00&lt;00:18, 27.38it/s]
-  1%|          | 5/500 [00:00&lt;00:16, 30.91it/s]
-  2%|▏         | 8/500 [00:00&lt;00:14, 33.41it/s]
-  2%|▏         | 10/500 [00:00&lt;00:14, 34.34it/s]
-  2%|▏         | 12/500 [00:00&lt;00:14, 34.17it/s]
-  3%|▎         | 14/500 [00:00&lt;00:13, 35.75it/s]
-  3%|▎         | 16/500 [00:00&lt;00:13, 35.44it/s]
-  4%|▎         | 18/500 [00:00&lt;00:13, 34.89it/s]
-  4%|▎         | 18/500 [00:00&lt;00:13, 36.19it/s]
-  3%|▎         | 17/500 [00:00&lt;00:13, 35.68it/s]
-  3%|▎         | 15/500 [00:00&lt;00:13, 36.30it/s]
+  0%|          | 1/500 [00:00&lt;00:07, 70.00it/s]
+  0%|          | 1/500 [00:00&lt;00:10, 48.66it/s]
+  0%|          | 1/500 [00:00&lt;00:10, 49.12it/s]
+  0%|          | 1/500 [00:00&lt;00:12, 40.38it/s]
+  0%|          | 1/500 [00:00&lt;00:09, 53.02it/s]
+  0%|          | 1/500 [00:00&lt;00:08, 58.70it/s]
+  0%|          | 1/500 [00:00&lt;00:09, 50.86it/s]
+  1%|▏         | 7/500 [00:00&lt;00:05, 85.73it/s]
+  2%|▏         | 8/500 [00:00&lt;00:05, 97.31it/s]
+  2%|▏         | 10/500 [00:00&lt;00:07, 64.66it/s]
+  3%|▎         | 13/500 [00:00&lt;00:07, 64.73it/s]
+  3%|▎         | 15/500 [00:00&lt;00:03, 124.53it/s]
+  3%|▎         | 17/500 [00:00&lt;00:04, 111.29it/s]
+  4%|▍         | 19/500 [00:00&lt;00:02, 190.76it/s]
+  4%|▍         | 19/500 [00:00&lt;00:05, 92.85it/s]
+  4%|▎         | 18/500 [00:00&lt;00:04, 99.21it/s]
+  3%|▎         | 16/500 [00:00&lt;00:06, 80.52it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -511,19 +508,19 @@ array([0.1594, 0.0126, 0.828 ])
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Text(0.5, 0, &#39;risk parity&#39;)
+Text(0.5,0,&#39;risk parity&#39;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../_images/tutorials_including-mean-return-and-variance_18_1.png"><img alt="../_images/tutorials_including-mean-return-and-variance_18_1.png" src="../_images/tutorials_including-mean-return-and-variance_18_1.png" style="width: 575px; height: 375px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_18_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_18_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_18_1.png" style="width: 576px; height: 377px;" /></a>
 </div>
 </div>
 </div>
 <div class="section" id="Adding-the-variance">
-<h2>Adding the variance<a class="headerlink" href="#Adding-the-variance" title="Permalink to this headline">¶</a></h2>
+<h1>Adding the variance<a class="headerlink" href="#Adding-the-variance" title="Permalink to this headline">¶</a></h1>
 <p>Likewise, <strong>riskparity.py</strong> allows users to include the variance of the portfolio into the objective function:</p>
 <div class="math notranslate nohighlight">
 \begin{array}{ll}
@@ -551,7 +548,7 @@ Text(0.5, 0, &#39;risk parity&#39;)
     <span class="n">my_portfolio</span><span class="o">.</span><span class="n">add_variance</span><span class="p">(</span><span class="n">lmd</span><span class="o">=</span><span class="n">lmd</span><span class="p">)</span>
     <span class="n">my_portfolio</span><span class="o">.</span><span class="n">design</span><span class="p">()</span>
     <span class="n">risk_parity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_concentration</span><span class="o">.</span><span class="n">evaluate</span><span class="p">())</span>
-    <span class="n">volatility</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">volatility</span><span class="p">)</span>
+    <span class="n">volatility</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">variance</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -560,26 +557,26 @@ Text(0.5, 0, &#39;risk parity&#39;)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-  8%|▊         | 39/500 [00:01&lt;00:13, 34.59it/s]
-  1%|          | 5/500 [00:00&lt;00:18, 27.49it/s]
+  9%|▉         | 45/500 [00:00&lt;00:05, 84.89it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
-  1%|          | 6/500 [00:00&lt;00:16, 30.02it/s]
-  2%|▏         | 9/500 [00:00&lt;00:16, 30.23it/s]
-  2%|▏         | 11/500 [00:00&lt;00:15, 31.48it/s]
-  3%|▎         | 14/500 [00:00&lt;00:14, 33.03it/s]
-  3%|▎         | 16/500 [00:00&lt;00:14, 32.76it/s]
-  4%|▍         | 19/500 [00:00&lt;00:14, 33.55it/s]
-  4%|▍         | 21/500 [00:00&lt;00:14, 32.46it/s]
-  5%|▍         | 24/500 [00:00&lt;00:14, 33.02it/s]
-  5%|▌         | 26/500 [00:00&lt;00:13, 34.40it/s]
-  5%|▌         | 27/500 [00:00&lt;00:13, 33.86it/s]
-  6%|▌         | 28/500 [00:00&lt;00:13, 34.24it/s]
-  6%|▌         | 28/500 [00:00&lt;00:13, 34.17it/s]
-  5%|▌         | 26/500 [00:00&lt;00:13, 34.19it/s]
-  5%|▍         | 23/500 [00:00&lt;00:13, 34.47it/s]
-  4%|▍         | 20/500 [00:00&lt;00:14, 33.56it/s]
-  3%|▎         | 17/500 [00:00&lt;00:14, 33.39it/s]
-  3%|▎         | 14/500 [00:00&lt;00:14, 33.03it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  1%|          | 4/500 [00:00&lt;00:11, 42.44it/s]
+  1%|▏         | 7/500 [00:00&lt;00:04, 118.71it/s]
+  2%|▏         | 9/500 [00:00&lt;00:04, 117.72it/s]
+  2%|▏         | 11/500 [00:00&lt;00:05, 82.23it/s]
+  3%|▎         | 14/500 [00:00&lt;00:06, 79.27it/s]
+  3%|▎         | 16/500 [00:00&lt;00:14, 32.73it/s]
+  4%|▍         | 19/500 [00:00&lt;00:04, 112.40it/s]
+  4%|▍         | 21/500 [00:00&lt;00:04, 104.90it/s]
+  5%|▍         | 24/500 [00:00&lt;00:02, 167.85it/s]
+  5%|▌         | 25/500 [00:00&lt;00:03, 132.87it/s]
+  5%|▌         | 26/500 [00:00&lt;00:03, 137.46it/s]
+  5%|▌         | 26/500 [00:00&lt;00:03, 130.70it/s]
+  5%|▍         | 24/500 [00:00&lt;00:03, 134.41it/s]
+  4%|▍         | 22/500 [00:00&lt;00:04, 117.07it/s]
+  4%|▍         | 19/500 [00:00&lt;00:04, 108.52it/s]
+  3%|▎         | 16/500 [00:00&lt;00:04, 114.33it/s]
+  3%|▎         | 14/500 [00:00&lt;00:03, 129.05it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -600,14 +597,14 @@ Text(0.5, 0, &#39;risk parity&#39;)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Text(0.5, 0, &#39;risk parity&#39;)
+Text(0.5,0,&#39;risk parity&#39;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../_images/tutorials_including-mean-return-and-variance_25_1.png"><img alt="../_images/tutorials_including-mean-return-and-variance_25_1.png" src="../_images/tutorials_including-mean-return-and-variance_25_1.png" style="width: 562px; height: 375px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_25_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_25_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_25_1.png" style="width: 576px; height: 377px;" /></a>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -617,7 +614,6 @@ Text(0.5, 0, &#39;risk parity&#39;)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
