@@ -447,9 +447,9 @@ div.rendered_html tbody tr:hover {
 \begin{array}{ll}
  \underset{\mathbf{w}}{\textsf{minimize}} &amp;
  R(\mathbf{w}) + \lambda \mathbf{w}^{\top}\boldsymbol{\Sigma}\mathbf{w}\\
- \textsf{subject to} &amp; \mathbf{l} \leq \mathbf{w} \leq \mathbf{u}, \texttt{sum}(\mathbf{w}) = 1,
+ \textsf{subject to} &amp; \mathbf{0} \leq \mathbf{w}, \texttt{sum}(\mathbf{w}) = 1,
 \end{array}</div><div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -458,7 +458,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -467,7 +467,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -475,26 +475,16 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Dmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Sigma</span><span class="p">))])</span>
-<span class="n">dvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mf">0.7</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)),</span> <span class="o">-</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Sigma</span><span class="p">))])</span>
-</pre></div>
-</div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">risk_parity</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">volatility</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">lmd</span> <span class="ow">in</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">lmd</span> <span class="ow">in</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">):</span>
     <span class="n">my_portfolio</span><span class="o">.</span><span class="n">add_variance</span><span class="p">(</span><span class="n">lmd</span><span class="o">=</span><span class="n">lmd</span><span class="p">)</span>
-    <span class="n">my_portfolio</span><span class="o">.</span><span class="n">design</span><span class="p">(</span><span class="n">Dmat</span><span class="o">=</span><span class="n">Dmat</span><span class="p">,</span> <span class="n">dvec</span><span class="o">=</span><span class="n">dvec</span><span class="p">)</span>
+    <span class="n">my_portfolio</span><span class="o">.</span><span class="n">design</span><span class="p">()</span>
     <span class="n">risk_parity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_concentration</span><span class="o">.</span><span class="n">evaluate</span><span class="p">())</span>
     <span class="n">volatility</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">volatility</span><span class="p">)</span>
 </pre></div>
@@ -505,7 +495,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-  1%|          | 6/500 [00:00&lt;00:20, 24.52it/s]
+  1%|▏         | 7/500 [00:00&lt;00:21, 22.80it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
@@ -521,26 +511,54 @@ div.rendered_html tbody tr:hover {
   0%|          | 0/500 [00:00&lt;?, ?it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 1/500 [00:00&lt;00:31, 15.64it/s]
+  0%|          | 1/500 [00:00&lt;00:33, 14.71it/s]
+  0%|          | 1/500 [00:00&lt;00:31, 15.74it/s]
+  0%|          | 2/500 [00:00&lt;00:21, 22.65it/s]
+  0%|          | 2/500 [00:00&lt;00:25, 19.46it/s]
+  0%|          | 2/500 [00:00&lt;00:24, 20.49it/s]
+  1%|          | 3/500 [00:00&lt;00:20, 24.15it/s]
+  1%|          | 3/500 [00:00&lt;00:19, 25.65it/s]
+  1%|          | 3/500 [00:00&lt;00:19, 25.44it/s]
+  1%|          | 4/500 [00:00&lt;00:18, 26.22it/s]
+  1%|          | 4/500 [00:00&lt;00:20, 23.86it/s]
+  1%|          | 4/500 [00:00&lt;00:28, 17.71it/s]
+  1%|          | 4/500 [00:00&lt;00:24, 20.59it/s]
+  1%|          | 5/500 [00:00&lt;00:20, 24.46it/s]
+  1%|          | 5/500 [00:00&lt;00:17, 27.52it/s]
+  1%|          | 5/500 [00:00&lt;00:21, 22.75it/s]
+  1%|          | 4/500 [00:00&lt;00:22, 22.42it/s]
+  1%|          | 3/500 [00:00&lt;00:23, 21.20it/s]
+  1%|          | 3/500 [00:00&lt;00:20, 23.78it/s]
+  1%|          | 4/500 [00:00&lt;00:24, 20.66it/s]
+  1%|          | 4/500 [00:00&lt;00:21, 22.78it/s]
+  1%|          | 6/500 [00:00&lt;00:16, 29.80it/s]
+  1%|          | 6/500 [00:00&lt;00:18, 26.83it/s]
+  1%|          | 5/500 [00:00&lt;00:22, 21.58it/s]
+  1%|          | 6/500 [00:00&lt;00:17, 28.43it/s]
+  1%|          | 4/500 [00:00&lt;00:18, 26.86it/s]
+  1%|          | 3/500 [00:00&lt;00:21, 23.37it/s]
+  1%|          | 3/500 [00:00&lt;00:26, 18.66it/s]
+  0%|          | 2/500 [00:00&lt;00:26, 19.05it/s]
+  0%|          | 2/500 [00:00&lt;00:26, 18.72it/s]
+  0%|          | 1/500 [00:00&lt;00:36, 13.57it/s]
+  0%|          | 1/500 [00:00&lt;00:36, 13.55it/s]
+  0%|          | 1/500 [00:00&lt;00:31, 15.93it/s]
   0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 1/500 [00:00&lt;00:32, 15.39it/s]
-  0%|          | 1/500 [00:00&lt;00:32, 15.27it/s]
-  0%|          | 1/500 [00:00&lt;00:31, 15.92it/s]
-  0%|          | 2/500 [00:00&lt;00:23, 21.63it/s]
-  0%|          | 2/500 [00:00&lt;00:23, 21.64it/s]
-  0%|          | 2/500 [00:00&lt;00:22, 21.94it/s]
-  0%|          | 2/500 [00:00&lt;00:22, 22.20it/s]
-  1%|          | 3/500 [00:00&lt;00:20, 23.94it/s]
-  1%|          | 3/500 [00:00&lt;00:19, 25.81it/s]
-  1%|          | 3/500 [00:00&lt;00:19, 26.06it/s]
-  1%|          | 3/500 [00:00&lt;00:19, 25.26it/s]
-  0%|          | 2/500 [00:00&lt;00:22, 22.14it/s]
-  1%|          | 3/500 [00:00&lt;00:19, 25.89it/s]
-  1%|          | 4/500 [00:00&lt;00:18, 26.98it/s]
-  1%|          | 4/500 [00:00&lt;00:18, 27.00it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -552,7 +570,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -564,11 +582,11 @@ Text(0.5, 0, &#39;risk parity&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_21_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_21_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_21_1.png" style="width: 604px; height: 370px;" /></a>
+<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_20_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_20_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_20_1.png" style="width: 575px; height: 370px;" /></a>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -578,23 +596,23 @@ Text(0.5, 0, &#39;risk parity&#39;)
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Text(0.5, 1.0, &#39;Risk Contributions $\\lambda = 562.0$&#39;)
+Text(0.5, 1.0, &#39;Risk Contributions $\\lambda = 5623413252.0$&#39;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_22_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_22_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_22_1.png" style="width: 532px; height: 372px;" /></a>
+<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_21_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_21_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_21_1.png" style="width: 521px; height: 372px;" /></a>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -603,7 +621,7 @@ Text(0.5, 1.0, &#39;Risk Contributions $\\lambda = 562.0$&#39;)
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -615,7 +633,7 @@ Text(0.5, 1.0, &#39;Risk Contributions $\\lambda = 562.0$&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_23_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_23_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_23_1.png" style="width: 542px; height: 348px;" /></a>
+<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_22_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_22_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_22_1.png" style="width: 521px; height: 348px;" /></a>
 </div>
 </div>
 </div>
@@ -704,7 +722,7 @@ Text(0.5,0,&#39;risk parity&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_30_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_30_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_30_1.png" style="width: 576px; height: 377px;" /></a>
+<a class="reference internal image-reference" href="../_images/tutorials_minimum-variance-constrained-risk-parity_29_1.png"><img alt="../_images/tutorials_minimum-variance-constrained-risk-parity_29_1.png" src="../_images/tutorials_minimum-variance-constrained-risk-parity_29_1.png" style="width: 576px; height: 377px;" /></a>
 </div>
 </div>
 <div class="nbinput nblast docutils container">

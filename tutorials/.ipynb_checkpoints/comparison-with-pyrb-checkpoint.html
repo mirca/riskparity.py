@@ -5,26 +5,25 @@
   <head>
     <meta charset="utf-8" />
     <title>Comparison with pyrb &#8212; riskparity.py 0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Including mean return and variance into the risk parity formulation" href="including-mean-return-and-variance.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <!-- Load Bootstrap CSS and Javascript (Javascript is needed for the navbar toggle) -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <!-- Load the theme's CSS. -->
-    <link rel="stylesheet" href="../_static/css/amunra.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/amunra.css" type="text/css" />
 
     
 
@@ -32,7 +31,7 @@
 <header>
 <nav class="navbar navbar-expand-lg navbar-light border-bottom">
   <div class="container">
-    <a class="navbar-brand" href="../index.html">riskparity.py</a>
+    <a class="navbar-brand" href="../../index.html">riskparity.py</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -45,12 +44,12 @@
           
           <li class="nav-item">
           
-            <a class="nav-link" href="index.html">Tutorials</a>
+            <a class="nav-link" href="../index.html">Tutorials</a>
           </li>
       </ul>
     
 
-        <form class="form-inline my-2 my-md-0 ml-auto" action="../search.html" method="get">
+        <form class="form-inline my-2 my-md-0 ml-auto" action="../../search.html" method="get">
             <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="q" />
         </form>
 
@@ -523,7 +522,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-320 µs ± 55.9 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+754 µs ± 284 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -589,7 +588,7 @@ array([0.09999997, 0.09999999, 0.10000001, 0.10000001, 0.1       ,
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-5.9 µs ± 59.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+12.8 µs ± 1.31 µs per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -656,9 +655,26 @@ array([0.22447778, 0.27514462, 0.03922505, 0.03589295, 0.03428179,
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/Users/mirca/opt/miniconda3/lib/python3.7/site-packages/jax/lib/xla_bridge.py:120: UserWarning: No GPU/TPU found, falling back to CPU.
-  warnings.warn(&#39;No GPU/TPU found, falling back to CPU.&#39;)
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  3%|▎         | 16/500 [00:00&lt;00:02, 188.40it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.2683062 , 0.28676888, 0.11409499, 0.09798482, 0.05613502,
+       0.05902914, 0.06655993, 0.05112103])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -666,7 +682,7 @@ array([0.22447778, 0.27514462, 0.03922505, 0.03589295, 0.03428179,
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">weights</span>
+<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">risk_contributions</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -676,31 +692,12 @@ array([0.22447778, 0.27514462, 0.03922505, 0.03589295, 0.03428179,
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([0.26830622, 0.28676891, 0.11409499, 0.09798482, 0.05613501,
-       0.05902912, 0.06655992, 0.05112101])
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">risk_contributions</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([0.12500001, 0.12500001, 0.125     , 0.12499999, 0.125     ,
-       0.125     , 0.125     , 0.125     ])
+array([0.12499995, 0.12499995, 0.12499998, 0.125     , 0.12500003,
+       0.12500003, 0.12500002, 0.12500004])
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -712,7 +709,7 @@ array([0.12500001, 0.12500001, 0.125     , 0.12499999, 0.125     ,
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -725,7 +722,44 @@ array([0.12500001, 0.12500001, 0.125     , 0.12499999, 0.125     ,
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-  1%|▏         | 7/500 [00:00&lt;00:44, 11.11it/s]
+  1%|          | 4/500 [00:00&lt;00:05, 94.67it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.25586119, 0.30203456, 0.0827723 , 0.05933262, 0.07283496,
+       0.07666131, 0.08550434, 0.06499873])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Dmat</span> <span class="o">@</span> <span class="n">my_rpp</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([-0.29999933, -0.04999971])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -733,7 +767,7 @@ array([0.12500001, 0.12500001, 0.125     , 0.12499999, 0.125     ,
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">weights</span>
+<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">risk_contributions</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -743,45 +777,8 @@ array([0.12500001, 0.12500001, 0.125     , 0.12499999, 0.125     ,
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([0.23186426, 0.27676939, 0.12093305, 0.0704333 , 0.07264196,
-       0.07773683, 0.08587855, 0.06374266])
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Dmat</span> <span class="o">@</span> <span class="n">my_rpp</span><span class="o">.</span><span class="n">weights</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([-0.3 , -0.05])
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_rpp</span><span class="o">.</span><span class="n">risk_contributions</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([0.07508326, 0.08382447, 0.10969463, 0.08355962, 0.1614587 ,
-       0.1651071 , 0.16492485, 0.15634737])
+array([0.09214817, 0.10508933, 0.07549705, 0.06827039, 0.16450981,
+       0.16624339, 0.16701866, 0.16122319])
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">

@@ -463,7 +463,9 @@ array([0.1594, 0.0126, 0.828 ])
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
- 11%|█▏        | 57/500 [00:00&lt;00:01, 284.43it/s]
+/Users/mirca/opt/miniconda3/lib/python3.7/site-packages/jax/lib/xla_bridge.py:120: UserWarning: No GPU/TPU found, falling back to CPU.
+  warnings.warn(&#39;No GPU/TPU found, falling back to CPU.&#39;)
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -471,7 +473,7 @@ array([0.1594, 0.0126, 0.828 ])
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span></span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">weights</span>
 </pre></div>
 </div>
 </div>
@@ -481,7 +483,7 @@ array([0.1594, 0.0126, 0.828 ])
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([0.27986272, 0.0877494 , 0.63238788])
+array([0.2798628 , 0.08774909, 0.63238811])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -489,7 +491,7 @@ array([0.27986272, 0.0877494 , 0.63238788])
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_contributions</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span></span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_contributions</span>
 </pre></div>
 </div>
 </div>
@@ -499,7 +501,7 @@ array([0.27986272, 0.0877494 , 0.63238788])
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([0.1594    , 0.01260011, 0.82799988])
+array([0.1594, 0.0126, 0.828 ])
 </pre></div></div>
 </div>
 <p>The main difference between the two approaches is that the former works only for the vanilla risk parity (budgeting) problem, i.e.: the objective function to be minimized is the risk concentration only, and the constraints are <span class="math notranslate nohighlight">\(\mathbf{w} \geq \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\texttt{sum}(\mathbf{w}) = 1\)</span>.</p>

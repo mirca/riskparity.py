@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Adding the mean return &#8212; riskparity.py 0.1 documentation</title>
+    <title>Minimum variance portfolio with risk parity &#8212; riskparity.py 0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -286,7 +286,8 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<p>Including mean return and variance into the risk parity formulation</p>
+<div class="section" id="Minimum-variance-portfolio-with-risk-parity">
+<h1>Minimum variance portfolio with risk parity<a class="headerlink" href="#Minimum-variance-portfolio-with-risk-parity" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -297,21 +298,42 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &quot;retina&quot;
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">rcParams</span>
 <span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;savefig.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">bs4</span> <span class="k">as</span> <span class="nn">bs</span>
+<span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/mirca/opt/miniconda3/lib/python3.7/site-packages/pandas_datareader/compat/__init__.py:7: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  from pandas.util.testing import assert_frame_equal
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -321,145 +343,46 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>In this notebook, we will check out the necessary interface to take into account the mean return and the variance while optimizing risk parity portfolios.</p>
-<div class="section" id="Adding-the-mean-return">
-<h1>Adding the mean return<a class="headerlink" href="#Adding-the-mean-return" title="Permalink to this headline">¶</a></h1>
-<p><strong>riskparity.py</strong> allows users to account for the mean return of the designed portfolio, i.e., we solve the following optimization problem:</p>
-<div class="math notranslate nohighlight">
-\begin{array}{ll}
- \underset{\mathbf{w}}{\textsf{minimize}} &amp;
- R(\mathbf{w}) - \alpha \mathbf{w}^{\top}\boldsymbol{\mu}\\
- \textsf{subject to} &amp; \mathbf{w} \geq \mathbf{0}, \texttt{sum}(\mathbf{w}) = 1
-\end{array}</div><p>In this notebook, we will construct the Mean Return x Risk Concentration profile for a simple universe with three assets. Like in the previous notebook, let’s assume their covariance matrix, mean vector, and our budget vector are as follows:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\boldsymbol{\Sigma} = \left[
-\begin{array}{ccc}
- 1.0000 &amp;  0.0015 &amp; -0.0119\\
- 0.0015 &amp;  1.0000 &amp; -0.0308\\
--0.0119 &amp; -0.0308 &amp;  1.0000
-\end{array}
-\right]\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}\boldsymbol{\mu} = \left[
-\begin{array}{c}
- 0.1837 \\
- 0.3465 \\
- 0.5210
-\end{array}
-\right]\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{b} = \left[
-\begin{array}{c}
- 0.1594 \\
- 0.0126 \\
- 0.8280
-\end{array}
-\right]\end{split}\]</div>
+<div class="section" id="Accessing-financial-data-from-Yahoo!-finance">
+<h2>Accessing financial data from Yahoo! finance<a class="headerlink" href="#Accessing-financial-data-from-Yahoo!-finance" title="Permalink to this headline">¶</a></h2>
+<p>In this step we are going to download stocks prices data from Yahoo! finance. For that, I chose to pick the 50 most representative stocks of the S&amp;P 500 index.</p>
+<p>The following lines of code web scrapes the website <a class="reference external" href="https://www.slickcharts.com/sp500">https://www.slickcharts.com/sp500</a> and gets the 50 most representative stocks of the S&amp;P 500 index:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mf">1.0000</span><span class="p">,</span> <span class="mf">0.0015</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0119</span><span class="p">)),</span>
-                   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mf">0.0015</span><span class="p">,</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0308</span><span class="p">)),</span>
-                   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mf">0.0119</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0308</span><span class="p">,</span> <span class="mf">1.0000</span><span class="p">))))</span>
+<span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.slickcharts.com/sp500&#39;</span><span class="p">)</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="n">bs</span><span class="o">.</span><span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;table table-hover table-borderless table-sm&#39;</span><span class="p">})</span>
+<span class="n">stocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">fn</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;/symbol/&quot;</span><span class="p">):]</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">fn</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/symbol&#39;</span><span class="p">)]</span>
+<span class="n">stocks_</span> <span class="o">=</span> <span class="p">[</span><span class="n">stocks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stocks</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Sigma</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([[ 1.    ,  0.0015, -0.0119],
-       [ 0.0015,  1.    , -0.0308],
-       [-0.0119, -0.0308,  1.    ]])
-</pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1837</span><span class="p">,</span> <span class="mf">0.3465</span><span class="p">,</span> <span class="mf">0.5210</span><span class="p">])</span>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">stocks_</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;MSFT&#39;, &#39;AAPL&#39;, &#39;AMZN&#39;, &#39;FB&#39;, &#39;BRK.B&#39;, &#39;JNJ&#39;, &#39;GOOG&#39;, &#39;GOOGL&#39;, &#39;V&#39;, &#39;JPM&#39;]
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">mu</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([0.1837, 0.3465, 0.521 ])
-</pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mf">0.1594</span><span class="p">,</span> <span class="mf">0.0126</span><span class="p">,</span> <span class="mf">0.8280</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">b</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([0.1594, 0.0126, 0.828 ])
-</pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_portfolio</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">RiskParityPortfolio</span><span class="p">(</span><span class="n">covariance</span><span class="o">=</span><span class="n">Sigma</span><span class="p">,</span> <span class="n">budget</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">risk_parity</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">mean_return</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">):</span>
-    <span class="n">my_portfolio</span><span class="o">.</span><span class="n">add_mean_return</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">mu</span><span class="p">)</span>
-    <span class="n">my_portfolio</span><span class="o">.</span><span class="n">design</span><span class="p">()</span>
-    <span class="n">risk_parity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_concentration</span><span class="o">.</span><span class="n">evaluate</span><span class="p">())</span>
-    <span class="n">mean_return</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">mean_return</span><span class="p">)</span>
+<span></span><span class="n">prices</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_yahoo</span><span class="p">(</span><span class="n">stocks_</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;2018-12-31&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;2019-12-31&quot;</span><span class="p">)[[</span><span class="s1">&#39;Adj Close&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -468,59 +391,254 @@ array([0.1594, 0.0126, 0.828 ])
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-  8%|▊         | 38/500 [00:00&lt;00:05, 90.06it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  0%|          | 1/500 [00:00&lt;00:07, 70.00it/s]
-  0%|          | 1/500 [00:00&lt;00:10, 48.66it/s]
-  0%|          | 1/500 [00:00&lt;00:10, 49.12it/s]
-  0%|          | 1/500 [00:00&lt;00:12, 40.38it/s]
-  0%|          | 1/500 [00:00&lt;00:09, 53.02it/s]
-  0%|          | 1/500 [00:00&lt;00:08, 58.70it/s]
-  0%|          | 1/500 [00:00&lt;00:09, 50.86it/s]
-  1%|▏         | 7/500 [00:00&lt;00:05, 85.73it/s]
-  2%|▏         | 8/500 [00:00&lt;00:05, 97.31it/s]
-  2%|▏         | 10/500 [00:00&lt;00:07, 64.66it/s]
-  3%|▎         | 13/500 [00:00&lt;00:07, 64.73it/s]
-  3%|▎         | 15/500 [00:00&lt;00:03, 124.53it/s]
-  3%|▎         | 17/500 [00:00&lt;00:04, 111.29it/s]
-  4%|▍         | 19/500 [00:00&lt;00:02, 190.76it/s]
-  4%|▍         | 19/500 [00:00&lt;00:05, 92.85it/s]
-  4%|▎         | 18/500 [00:00&lt;00:04, 99.21it/s]
-  3%|▎         | 16/500 [00:00&lt;00:06, 80.52it/s]
+/Users/mirca/opt/miniconda3/lib/python3.7/site-packages/pandas_datareader/base.py:270: SymbolWarning: Failed to read symbol: &#39;BRK.B&#39;, replacing with NaN.
+  warnings.warn(msg.format(sym), SymbolWarning)
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">risk_parity</span><span class="p">,</span> <span class="n">mean_return</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">risk_parity</span><span class="p">,</span> <span class="n">mean_return</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;mean return&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;risk parity&quot;</span><span class="p">)</span>
+<span></span><span class="n">prices</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">prices</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">log_returns</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">log_returns</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Text(0.5,0,&#39;risk parity&#39;)
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x218623390&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_18_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_18_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_18_1.png" style="width: 576px; height: 377px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_12_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_12_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_12_1.png" style="width: 554px; height: 350px;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="Optimization-problem">
+<h2>Optimization problem<a class="headerlink" href="#Optimization-problem" title="Permalink to this headline">¶</a></h2>
+<p><strong>riskparity.py</strong> allows users to account for the variance of the designed portfolio, i.e., we solve the following optimization problem:</p>
+<div class="math notranslate nohighlight">
+\begin{array}{ll}
+ \underset{\mathbf{w}}{\textsf{minimize}} &amp;
+ R(\mathbf{w}) + \lambda \mathbf{w}^{\top}\boldsymbol{\Sigma}\mathbf{w}\\
+ \textsf{subject to} &amp; \mathbf{0} \leq \mathbf{w}, \texttt{sum}(\mathbf{w}) = 1,
+\end{array}</div><div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">log_returns</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">risk_budget</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Sigma</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">my_portfolio</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">RiskParityPortfolio</span><span class="p">(</span><span class="n">covariance</span><span class="o">=</span><span class="n">Sigma</span><span class="p">,</span> <span class="n">budget</span><span class="o">=</span><span class="n">risk_budget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">risk_parity</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">volatility</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lmd</span> <span class="ow">in</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">):</span>
+    <span class="n">my_portfolio</span><span class="o">.</span><span class="n">add_variance</span><span class="p">(</span><span class="n">lmd</span><span class="o">=</span><span class="n">lmd</span><span class="p">)</span>
+    <span class="n">my_portfolio</span><span class="o">.</span><span class="n">design</span><span class="p">()</span>
+    <span class="n">risk_parity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_concentration</span><span class="o">.</span><span class="n">evaluate</span><span class="p">())</span>
+    <span class="n">volatility</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">volatility</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+  1%|▏         | 7/500 [00:00&lt;00:21, 22.80it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 1/500 [00:00&lt;00:31, 15.64it/s]
+  0%|          | 1/500 [00:00&lt;00:33, 14.71it/s]
+  0%|          | 1/500 [00:00&lt;00:31, 15.74it/s]
+  0%|          | 2/500 [00:00&lt;00:21, 22.65it/s]
+  0%|          | 2/500 [00:00&lt;00:25, 19.46it/s]
+  0%|          | 2/500 [00:00&lt;00:24, 20.49it/s]
+  1%|          | 3/500 [00:00&lt;00:20, 24.15it/s]
+  1%|          | 3/500 [00:00&lt;00:19, 25.65it/s]
+  1%|          | 3/500 [00:00&lt;00:19, 25.44it/s]
+  1%|          | 4/500 [00:00&lt;00:18, 26.22it/s]
+  1%|          | 4/500 [00:00&lt;00:20, 23.86it/s]
+  1%|          | 4/500 [00:00&lt;00:28, 17.71it/s]
+  1%|          | 4/500 [00:00&lt;00:24, 20.59it/s]
+  1%|          | 5/500 [00:00&lt;00:20, 24.46it/s]
+  1%|          | 5/500 [00:00&lt;00:17, 27.52it/s]
+  1%|          | 5/500 [00:00&lt;00:21, 22.75it/s]
+  1%|          | 4/500 [00:00&lt;00:22, 22.42it/s]
+  1%|          | 3/500 [00:00&lt;00:23, 21.20it/s]
+  1%|          | 3/500 [00:00&lt;00:20, 23.78it/s]
+  1%|          | 4/500 [00:00&lt;00:24, 20.66it/s]
+  1%|          | 4/500 [00:00&lt;00:21, 22.78it/s]
+  1%|          | 6/500 [00:00&lt;00:16, 29.80it/s]
+  1%|          | 6/500 [00:00&lt;00:18, 26.83it/s]
+  1%|          | 5/500 [00:00&lt;00:22, 21.58it/s]
+  1%|          | 6/500 [00:00&lt;00:17, 28.43it/s]
+  1%|          | 4/500 [00:00&lt;00:18, 26.86it/s]
+  1%|          | 3/500 [00:00&lt;00:21, 23.37it/s]
+  1%|          | 3/500 [00:00&lt;00:26, 18.66it/s]
+  0%|          | 2/500 [00:00&lt;00:26, 19.05it/s]
+  0%|          | 2/500 [00:00&lt;00:26, 18.72it/s]
+  0%|          | 1/500 [00:00&lt;00:36, 13.57it/s]
+  0%|          | 1/500 [00:00&lt;00:36, 13.55it/s]
+  0%|          | 1/500 [00:00&lt;00:31, 15.93it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+  0%|          | 0/500 [00:00&lt;?, ?it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">risk_parity</span><span class="p">,</span> <span class="n">volatility</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">risk_parity</span><span class="p">,</span> <span class="n">volatility</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;volatility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;risk parity&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;risk parity&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_20_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_20_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_20_1.png" style="width: 575px; height: 370px;" /></a>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">log_returns</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">risk_contributions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Risk Contributions $\lambda = </span><span class="si">{}</span><span class="s2">$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">lmd</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Risk Contributions $\\lambda = 5623413252.0$&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_21_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_21_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_21_1.png" style="width: 521px; height: 372px;" /></a>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">log_returns</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">my_portfolio</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;BarContainer object of 9 artists&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_22_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_22_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_22_1.png" style="width: 521px; height: 348px;" /></a>
 </div>
 </div>
 </div>
 <div class="section" id="Adding-the-variance">
-<h1>Adding the variance<a class="headerlink" href="#Adding-the-variance" title="Permalink to this headline">¶</a></h1>
+<h2>Adding the variance<a class="headerlink" href="#Adding-the-variance" title="Permalink to this headline">¶</a></h2>
 <p>Likewise, <strong>riskparity.py</strong> allows users to include the variance of the portfolio into the objective function:</p>
 <div class="math notranslate nohighlight">
 \begin{array}{ll}
@@ -604,7 +722,7 @@ Text(0.5,0,&#39;risk parity&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_25_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_25_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_25_1.png" style="width: 576px; height: 377px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_29_1.png"><img alt="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_29_1.png" src="../../_images/tutorials_.ipynb_checkpoints_minimum-variance-constrained-risk-parity-checkpoint_29_1.png" style="width: 576px; height: 377px;" /></a>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -614,6 +732,7 @@ Text(0.5,0,&#39;risk parity&#39;)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
